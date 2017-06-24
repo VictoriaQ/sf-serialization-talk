@@ -8,8 +8,9 @@ $client = new \GuzzleHttp\Client([
     ]
 ]);
 
+$name = Orion;
 $data = array(
-    'name' => Orion,
+    'name' => $name,
     'color' => 'Razzmic Berry',
     'maxSpeed' => '8900'
 );
@@ -17,5 +18,8 @@ $data = array(
 $response = $client->post('/api/spaceships', [
     'body' => json_encode($data)
 ]);
+
+$response = $client->get('/api/spaceships/'.$name);
+
 echo $response;
 echo "\n\n";

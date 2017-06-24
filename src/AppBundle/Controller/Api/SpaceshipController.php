@@ -29,4 +29,23 @@ class SpaceshipController extends Controller
 
         return new Response("Spaceship created!");
     }
+
+    /**
+     * @Route("/api/spaceships/{name}")
+     * @Method("GET")
+     */
+    public function showAction($name)
+    {
+        $spaceship = $this->getDoctrine()
+                ->getRepository('AppBundle:Spaceship')
+                ->findOneByName($name);
+
+        $data = array(
+            'name' => $spaceship->getName(),
+            'color' => $spaceship->getColor(),
+            'maxSpeed' => $spaceship->getMaxSpeed(),
+        );
+
+        return new Response(json_encode($data), 200);
+    }
 }
