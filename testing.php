@@ -8,11 +8,11 @@ $client = new \GuzzleHttp\Client([
     ]
 ]);
 
-$name = Orion;
+$name = Orion2;
 $data = array(
     'name' => $name,
     'color' => 'Razzmic Berry',
-    'maxSpeed' => '8900'
+    'maxSpeed' => '9900'
 );
 
 $response = $client->post('/api/spaceships', [

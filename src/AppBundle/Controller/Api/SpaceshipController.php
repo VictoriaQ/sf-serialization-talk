@@ -17,11 +17,8 @@ class SpaceshipController extends Controller
      */
     public function newAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $spaceship = new Spaceship();
-        $spaceship->setName($data['name']);        
-        $spaceship->setColor($data['color']);
-        $spaceship->setMaxSpeed($data['maxSpeed']);        
+        $serializer = $this->container->get('jms_serializer');
+        $spaceship = $serializer->deserialize($request->getContent(), Spaceship::class, 'json');
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($spaceship);
@@ -40,12 +37,8 @@ class SpaceshipController extends Controller
                 ->getRepository('AppBundle:Spaceship')
                 ->findOneByName($name);
 
-        $data = array(
-            'name' => $spaceship->getName(),
-            'color' => $spaceship->getColor(),
-            'maxSpeed' => $spaceship->getMaxSpeed(),
-        );
+        $serializer = $this->container->get('jms_serializer');
 
-        return new Response(json_encode($data), 200);
+        return new Response($serializer->serialize($spaceship, 'json'), 200);
     }
 }
