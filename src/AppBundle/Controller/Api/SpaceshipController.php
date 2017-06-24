@@ -50,6 +50,9 @@ class SpaceshipController extends Controller
                 ->getRepository('AppBundle:Spaceship')
                 ->findOneByName($name);
 
-        return new Response($serializer->serialize($spaceship, 'json'), 200);
+        $response = new Response($serializer->serialize($spaceship, 'json'), 200);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response; 
     }
 }
