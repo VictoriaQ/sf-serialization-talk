@@ -8,6 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Spaceship;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class SpaceshipController extends Controller
 {
@@ -17,7 +21,11 @@ class SpaceshipController extends Controller
      */
     public function newAction(Request $request)
     {
-        $serializer = $this->container->get('jms_serializer');
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+
         $spaceship = $serializer->deserialize($request->getContent(), Spaceship::class, 'json');
 
         $em = $this->getDoctrine()->getManager();
@@ -33,11 +41,14 @@ class SpaceshipController extends Controller
      */
     public function showAction($name)
     {
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+
         $spaceship = $this->getDoctrine()
                 ->getRepository('AppBundle:Spaceship')
                 ->findOneByName($name);
-
-        $serializer = $this->container->get('jms_serializer');
 
         return new Response($serializer->serialize($spaceship, 'json'), 200);
     }
