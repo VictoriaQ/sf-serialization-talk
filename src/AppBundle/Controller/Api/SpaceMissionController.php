@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use JMS\Serializer\SerializationContext;
 
 class SpaceMissionController extends Controller
 {
@@ -44,7 +45,10 @@ class SpaceMissionController extends Controller
                 ->getRepository('AppBundle:SpaceMission')
                 ->findOneByName($name);
 
-        $response = new Response($serializer->serialize($mission, 'json'), 200);
+        $response = new Response($serializer->serialize($mission, 'json', SerializationContext::create()
+            ->setVersion(2.1)
+            ->setGroups(array('list')))
+        ,200);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response; 

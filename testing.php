@@ -9,10 +9,11 @@ $client = new \GuzzleHttp\Client([
 ]);
 
 $spaceship = 'Orion';
+$mission = 'Apolo18';
 $data = array(
     'name' => $spaceship,
     'color' => 'Razzmic Berry',
-    'maxSpeed' => '8900'
+    'maxSpeed' => '8900',
 );
 
 $response = $client->post('/api/spaceships', [
@@ -21,11 +22,11 @@ $response = $client->post('/api/spaceships', [
 
 $response = $client->get('/api/spaceships/'.$spaceship);
 
-$mission = 'Apolo18';
 $data = array(
-    'name' => $mission,
+    'mission' => $mission,
     'budget' => '19.0',
     'email' => 'apolo18@nasa.es',
+    'logo' => 'apolo18.png',
     'twitter' => 'apolo18',
 );
 

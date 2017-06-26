@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * SpaceMission
  *
  * @ORM\Table(name="space_mission")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceMissionRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class SpaceMission
 {
@@ -25,6 +27,9 @@ class SpaceMission
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\SerializedName("mission")
+     * @JMS\Groups({"list", "show"})
      */
     private $name;
 
@@ -39,6 +44,8 @@ class SpaceMission
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $email;
 
@@ -46,21 +53,37 @@ class SpaceMission
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     private $logo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="twitter", type="string", length=255, nullable=true)
+     * @ORM\Column(name="twitter", type="string", length=255)
+     * @JMS\Since("2.0")
+     * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     private $twitter;
 
     /**
-     * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission")
+     * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission", cascade="persist")
+     * @JMS\Expose
      */
     protected $spaceship;
 
+    ///**
+    //  * @JMS\VirtualProperty
+    //  * @JMS\Expose
+    //  * @JMS\SerializedName("spaceship")
+    //  * @JMS\Groups({"list", "show"})
+    //  */
+    //public function getSpaceshipName()
+    //{
+    //        return $this->spaceship->getName();
+    //}
 
     /**
      * Get id
@@ -202,6 +225,7 @@ class SpaceMission
     public function setSpaceship(\AppBundle\Entity\Spaceship $spaceship = null)
     {
         $this->spaceship = $spaceship;
+        $spaceship->setSpaceMission($this);
 
         return $this;
     }
