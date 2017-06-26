@@ -42,6 +42,11 @@ class Spaceship
      */
     private $maxSpeed;
 
+    /**
+     * @ORM\OneToOne(targetEntity="SpaceMission", inversedBy="spaceship")
+     */
+    protected $mission;
+
 
     /**
      * Get id
@@ -124,5 +129,28 @@ class Spaceship
     {
         return $this->maxSpeed;
     }
-}
 
+    /**
+     * Set mission
+     *
+     * @param \AppBundle\Entity\SpaceMission $mission
+     *
+     * @return Spaceship
+     */
+    public function setMission(\AppBundle\Entity\SpaceMission $mission = null)
+    {
+        $this->mission = $mission;
+
+        return $this;
+    }
+
+    /**
+     * Get mission
+     *
+     * @return \AppBundle\Entity\SpaceMission
+     */
+    public function getMission()
+    {
+        return $this->mission;
+    }
+}
