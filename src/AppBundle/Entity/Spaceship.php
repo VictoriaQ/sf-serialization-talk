@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Spaceship
  *
  * @ORM\Table(name="spaceship")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceshipRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class Spaceship
 {
@@ -25,6 +27,8 @@ class Spaceship
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     private $name;
 
@@ -32,6 +36,8 @@ class Spaceship
      * @var string
      *
      * @ORM\Column(name="color", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     private $color;
 
@@ -39,6 +45,8 @@ class Spaceship
      * @var int
      *
      * @ORM\Column(name="maxSpeed", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     private $maxSpeed;
 

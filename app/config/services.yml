@@ -33,3 +33,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false

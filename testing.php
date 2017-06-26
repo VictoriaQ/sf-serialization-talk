@@ -16,9 +16,9 @@ $data = array(
     'maxSpeed' => '8900',
 );
 
-$response = $client->post('/api/spaceships', [
-    'body' => json_encode($data)
-]);
+//$response = $client->post('/api/spaceships', [
+//    'body' => json_encode($data)
+//]);
 
 $response = $client->get('/api/spaceships/'.$spaceship);
 
@@ -28,6 +28,11 @@ $data = array(
     'email' => 'apolo18@nasa.es',
     'logo' => 'apolo18.png',
     'twitter' => 'apolo18',
+    'spaceship' => array (
+        'name' => $spaceship,
+        'color' => 'Razzmic Berry',
+        'maxSpeed' => '8900',
+    )
 );
 
 $response = $client->post('/api/missions', [

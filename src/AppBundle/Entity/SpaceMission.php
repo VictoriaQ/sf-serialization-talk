@@ -70,7 +70,9 @@ class SpaceMission
 
     /**
      * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission", cascade="persist")
+     * @JMS\Type("AppBundle\Entity\Spaceship")
      * @JMS\Expose
+     * @JMS\Groups({"list", "show"})
      */
     protected $spaceship;
 
