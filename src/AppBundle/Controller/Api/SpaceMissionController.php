@@ -17,6 +17,7 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 class SpaceMissionController extends Controller
 {
@@ -27,7 +28,7 @@ class SpaceMissionController extends Controller
     public function newAction(Request $request)
     {
         $encoders = array(new JsonEncoder());
-        $normalizer = new ObjectNormalizer();
+        $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
         $normalizers = array($normalizer);
         $serializer = new Serializer($normalizers, $encoders);    
 

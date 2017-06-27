@@ -63,19 +63,9 @@ class SpaceMission
 
     /**
      * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission", cascade="persist")
+     * @SfSerializer\Groups({"list", "show"})
      */
     protected $spaceship;
-
-    /**
-      * @JMS\VirtualProperty
-      * @JMS\Expose
-      * @JMS\SerializedName("spaceship")
-      * @JMS\Groups({"list", "show"})
-      */
-    public function getSpaceshipName()
-    {
-            return $this->spaceship->getName();
-    }
 
     /**
      * Is ready
@@ -249,6 +239,7 @@ class SpaceMission
     public function setSpaceship(\AppBundle\Entity\Spaceship $spaceship = null)
     {
         $this->spaceship = $spaceship;
+        $spaceship->setMission($this);
 
         return $this;
     }
@@ -258,7 +249,7 @@ class SpaceMission
      *
      * @return \AppBundle\Entity\Spaceship
      */
-    public function getSpaceshipObject()
+    public function getSpaceship()
     {
         return $this->spaceship;
     }
@@ -269,7 +260,7 @@ class SpaceMission
      * @return string
      * @SfSerializer\Groups({"list", "show"})
      */
-    public function getSpaceship()
+    public function getSpaceshipName()
     {
         return $this->spaceship->getName();
     }
