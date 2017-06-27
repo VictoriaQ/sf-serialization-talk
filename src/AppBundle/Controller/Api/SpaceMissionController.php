@@ -14,6 +14,9 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use JMS\Serializer\SerializationContext;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 
 class SpaceMissionController extends Controller
 {
@@ -23,7 +26,11 @@ class SpaceMissionController extends Controller
      */
     public function newAction(Request $request)
     {
-        $serializer = $this->container->get('jms_serializer');
+        $encoders = array(new JsonEncoder());
+        $normalizer = new ObjectNormalizer();
+        $normalizers = array($normalizer);
+        $serializer = new Serializer($normalizers, $encoders);    
+
         $mission = $serializer->deserialize($request->getContent(), SpaceMission::class, 'json');
 
         $em = $this->getDoctrine()->getManager();
@@ -39,16 +46,23 @@ class SpaceMissionController extends Controller
      */
     public function showAction($name)
     {
-        $serializer = $this->container->get('jms_serializer');
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $encoders = array(new JsonEncoder());
+        $normalizer = new ObjectNormalizer($classMetadataFactory);
+        $normalizer->setIgnoredAttributes(array('id', 'budget'));
+        //$normalizer->setCircularReferenceHandler(function ($object) {
+        //        return $object->getName();
+        //});
+        //$normalizer->setCircularReferenceLimit(1);
+        $normalizers = array($normalizer);
+        $serializer = new Serializer($normalizers, $encoders);    
 
         $mission = $this->getDoctrine()
                 ->getRepository('AppBundle:SpaceMission')
                 ->findOneByName($name);
 
-        $response = new Response($serializer->serialize($mission, 'json', SerializationContext::create()
-            ->setVersion(2.1)
-            ->setGroups(array('list')))
-        ,200);
+        $groups = ['groups' => ['list']];
+        $response = new Response($serializer->serialize($mission, 'json', $groups), 200);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response; 

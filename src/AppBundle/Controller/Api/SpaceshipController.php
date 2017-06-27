@@ -42,7 +42,13 @@ class SpaceshipController extends Controller
     public function showAction($name)
     {
         $encoders = array(new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setIgnoredAttributes(array('id', 'budget', 'mission'));
+        //$normalizer->setCircularReferenceHandler(function ($object) {
+        //        return $object->getName();
+        //});
+        //$normalizer->setCircularReferenceLimit(1);
+        $normalizers = array($normalizer);
 
         $serializer = new Serializer($normalizers, $encoders);
 
@@ -50,7 +56,8 @@ class SpaceshipController extends Controller
                 ->getRepository('AppBundle:Spaceship')
                 ->findOneByName($name);
 
-        $response = new Response($serializer->serialize($spaceship, 'json'), 200);
+        $groups = ['groups' => ['list']];
+        $response = new Response($serializer->serialize($spaceship, 'json', $groups), 200);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response; 

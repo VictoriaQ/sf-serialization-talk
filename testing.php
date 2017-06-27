@@ -23,17 +23,17 @@ $data = array(
 $response = $client->get('/api/spaceships/'.$spaceship);
 
 $data = array(
-    'mission' => $mission,
+    'name' => $mission,
     'budget' => '19.0',
     'email' => 'apolo18@nasa.es',
     'logo' => 'apolo18.png',
     'twitter' => 'apolo18',
 );
 
-$response = $client->post('/api/missions', [
-    'body' => json_encode($data)
-]);
-
+//$response = $client->post('/api/missions', [
+//    'body' => json_encode($data)
+//]);
+//
 $response = $client->get('/api/missions/'.$mission);
 
 echo $response;
