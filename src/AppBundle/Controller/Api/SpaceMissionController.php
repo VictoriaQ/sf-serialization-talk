@@ -61,6 +61,12 @@ class SpaceMissionController extends Controller
                 ->getRepository('AppBundle:SpaceMission')
                 ->findOneByName($name);
 
+        $callback = function ($logoPath) {
+            return 'thumb_'.$logoPath;
+        };
+
+        $normalizer->setCallbacks(array('logo' => $callback));
+
         $groups = ['groups' => ['list']];
         $response = new Response($serializer->serialize($mission, 'json', $groups), 200);
         $response->headers->set('Content-Type', 'application/json');

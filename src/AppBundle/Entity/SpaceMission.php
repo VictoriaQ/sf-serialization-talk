@@ -27,7 +27,6 @@ class SpaceMission
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @SfSerializer\Groups({"list", "show"})
      */
     private $name;
 
@@ -64,7 +63,6 @@ class SpaceMission
 
     /**
      * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission", cascade="persist")
-     * @SfSerializer\Groups({"list", "show"})
      */
     protected $spaceship;
 
@@ -77,6 +75,17 @@ class SpaceMission
     public function getSpaceshipName()
     {
             return $this->spaceship->getName();
+    }
+
+    /**
+     * Is ready
+     *
+     * @return boolean
+     * @SfSerializer\Groups({"list", "show"})
+     */
+    public function isReady()
+    {
+        return true;
     }
 
     /**
@@ -109,6 +118,17 @@ class SpaceMission
      * @return string
      */
     public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get mission
+     *
+     * @return string
+     * @SfSerializer\Groups({"list", "show"})
+     */
+    public function getMission()
     {
         return $this->name;
     }
@@ -238,8 +258,19 @@ class SpaceMission
      *
      * @return \AppBundle\Entity\Spaceship
      */
-    public function getSpaceship()
+    public function getSpaceshipObject()
     {
         return $this->spaceship;
+    }
+
+    /**
+     * Get spaceship name
+     *
+     * @return string
+     * @SfSerializer\Groups({"list", "show"})
+     */
+    public function getSpaceship()
+    {
+        return $this->spaceship->getName();
     }
 }
