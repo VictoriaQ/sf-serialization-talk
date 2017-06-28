@@ -28,11 +28,6 @@ $data = array(
     'email' => 'apolo18@nasa.es',
     'logo' => 'apolo18.png',
     'twitter' => 'apolo18',
-    'spaceship' => array (
-        'name' => $spaceship,
-        'color' => 'Razzmic Berry',
-        'maxSpeed' => '8900',
-    )
 );
 
 $response = $client->post('/api/missions', [

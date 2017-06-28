@@ -54,6 +54,7 @@ class SpaceMission
      *
      * @ORM\Column(name="logo", type="string", length=255, nullable=true)
      * @JMS\Expose
+     * @JMS\Accessor(getter="getThumbnail")
      * @JMS\Groups({"list", "show"})
      */
     private $logo;
@@ -70,22 +71,19 @@ class SpaceMission
 
     /**
      * @ORM\OneToOne(targetEntity="Spaceship", mappedBy="mission", cascade="persist")
-     * @JMS\Type("AppBundle\Entity\Spaceship")
-     * @JMS\Expose
-     * @JMS\Groups({"list", "show"})
      */
     protected $spaceship;
 
-    ///**
-    //  * @JMS\VirtualProperty
-    //  * @JMS\Expose
-    //  * @JMS\SerializedName("spaceship")
-    //  * @JMS\Groups({"list", "show"})
-    //  */
-    //public function getSpaceshipName()
-    //{
-    //        return $this->spaceship->getName();
-    //}
+    /**
+      * @JMS\VirtualProperty
+      * @JMS\Expose
+      * @JMS\SerializedName("spaceship")
+      * @JMS\Groups({"list", "show"})
+      */
+    public function getSpaceshipName()
+    {
+            return $this->spaceship->getName();
+    }
 
     /**
      * Get id
@@ -191,6 +189,16 @@ class SpaceMission
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return 'thumb_'.$this->logo;
     }
 
     /**
